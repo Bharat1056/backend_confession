@@ -47,10 +47,8 @@ export const addUser = asyncHandler(async (req, res) => {
     userId: newUser._id,
   });
   await newLike.save();
-  
-  return res
-    .status(200)
-    .json("Confession captured! 🤐🔒");
+
+  return res.status(200).json("Confession captured! 🤐🔒");
 });
 
 export const increaseLike = asyncHandler(async (req, res) => {
@@ -126,23 +124,21 @@ export const all = asyncHandler(async (req, res) => {
       $group: {
         _id: "$user.message",
         likeCount: { $sum: 1 },
-        latestDate: { $max: "$createdAt" } // Get the maximum creation date
+        latestDate: { $max: "$createdAt" }, 
       },
     },
     {
       $project: {
         _id: 0,
         message: "$_id",
-        likeCount: {
-          $subtract: ["$likeCount", 1],
-        },
-        latestDate: 1 // Include the latest date in the projection
+        likeCount: 1, 
+        latestDate: 1, 
       },
     },
     {
       $sort: {
-        likeCount: -1,
-        latestDate: -1 // Sort by likeCount in descending order and latestDate in descending order
+        latestDate: -1, 
+        likeCount: -1, 
       },
     },
   ]);
